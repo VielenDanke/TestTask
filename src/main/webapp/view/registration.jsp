@@ -16,12 +16,15 @@
 </head>
 <body>
 <div class="wrapper fadeInDown">
+    ${error}
     <div id="formContent">
         <form:form action="save" method="post" modelAttribute="user">
             <h3>Username</h3>
             <form:input path="username" cssClass="fadeIn second"/>
             <h3>Password</h3>
             <form:password path="password" cssClass="fadeIn third"/>
+            <h3>Date of birth</h3>
+            <form:input type="date" path="dateOfBirth" cssClass="fadeIn third"/>
             <input type="submit" class="fadeIn fourth" value="Submit">
         </form:form>
         <div id="formFooter">

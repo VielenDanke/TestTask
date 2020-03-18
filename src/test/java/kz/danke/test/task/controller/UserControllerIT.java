@@ -93,7 +93,7 @@ public class UserControllerIT {
         Mockito.when(userService.save(USER_LIST.get(0)))
                 .thenReturn(USER_LIST.get(0));
 
-        this.mockMvc.perform(get("/increase").principal(new UserPrincipal("TEST_1")))
+        this.mockMvc.perform(get("/increase").principal(new UserPrincipal(USERNAME_FIRST_USER)))
                 .andExpect(model().attribute("number", 0))
                 .andExpect(model().attribute("name", USER_LIST.get(0).getUsername()))
                 .andExpect(view().name("cabinet"));

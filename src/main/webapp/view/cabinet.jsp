@@ -25,6 +25,7 @@
     <ul class="list-group list-group-flush">
         <li class="list-group-item">${name}</li>
         <li class="list-group-item">${number}</li>
+        <li class="list-group-item">${birthDate}</li>
     </ul>
     <div class="card-body">
         <a href="${pageContext.request.contextPath}/" class="card-link">Main page</a>

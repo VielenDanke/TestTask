@@ -46,6 +46,7 @@ public class UserController {
 
         modelAndView.addObject("name", user.getUsername());
         modelAndView.addObject("number", user.getNumber());
+        modelAndView.addObject("birthDate", user.getDateOfBirth());
 
         return modelAndView;
     }
@@ -65,6 +66,7 @@ public class UserController {
 
         model.addAttribute("number", byUsername.getNumber());
         model.addAttribute("name", byUsername.getUsername());
+        model.addAttribute("birthDate", byUsername.getDateOfBirth());
 
         byUsername.setNumber(byUsername.getNumber() + 1);
 
