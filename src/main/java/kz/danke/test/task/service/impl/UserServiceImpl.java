@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -23,8 +22,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        String encode = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encode);
+        if (user.getId() == null) {
+            String encode = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encode);
+        }
         if (!DateValidation.isAgeValid(user.getDateOfBirth())) {
             throw new WrongDateException("Invalid date");
         }
@@ -34,5 +35,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public User findByActivationCode(String activationCode) {
+        return userRepository.findByActivationCode(activationCode)
+                .orElseThrow(() -> new WrongDateException("Activation code not found"));
     }
 }

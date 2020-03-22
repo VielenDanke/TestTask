@@ -13,7 +13,6 @@ public class ExceptionHandlerControllerAdvice {
     @ExceptionHandler(WrongDateException.class)
     public String exceptionHandler(HttpServletRequest request, Exception ex) {
         request.setAttribute("error", ex.getMessage());
-        request.setAttribute("user", new User());
-        return "registration";
+        return "errorPage";
     }
 }

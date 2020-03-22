@@ -13,5 +13,6 @@ public class UserDTO {
     private String username;
     private String password;
     private String dateOfBirth;
+    private String email;
     private MultipartFile imageFile;
 }

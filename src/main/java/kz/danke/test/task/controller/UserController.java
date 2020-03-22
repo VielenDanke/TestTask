@@ -3,12 +3,14 @@ package kz.danke.test.task.controller;
 import kz.danke.test.task.dto.UserDTO;
 import kz.danke.test.task.model.User;
 import kz.danke.test.task.service.UserService;
+import kz.danke.test.task.service.impl.MailSenderImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,6 +25,7 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final MailSenderImpl mailSenderImpl;
 
     @Value("${spring.servlet.multipart.location}")
     private String filePath;
@@ -74,6 +77,8 @@ public class UserController {
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
         user.setDateOfBirth(userDTO.getDateOfBirth());
+        user.setEmail(userDTO.getEmail());
+        user.setActivationCode(UUID.randomUUID().toString());
 
         MultipartFile imageFile = userDTO.getImageFile();
 
@@ -91,9 +96,25 @@ public class UserController {
 
             user.setImageName(resultFileName);
         }
+        String message = String.format("Hello %s, \n" +
+                "Click this link to activate your account " + "http://localhost:8383/activate/%s",
+                user.getUsername(),
+                user.getActivationCode());
+        mailSenderImpl.sendEmail(user.getEmail(), "Activation code", message);
+
         userService.save(user);
 
         return modelAndView;
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activateAccount(@PathVariable String code) {
+        ModelAndView modelAndView = new ModelAndView("/login");
+        User user = userService.findByActivationCode(code);
+        modelAndView.addObject("activate", "Successfully activated");
+        user.setActivationCode(null);
+        userService.save(user);
+        return "redirect:/login";
     }
 
     @GetMapping("/increase")

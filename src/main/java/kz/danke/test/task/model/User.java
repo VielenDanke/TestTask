@@ -33,6 +33,10 @@ public class User {
     private String dateOfBirth;
     @Column(name = "IMAGE_NAME")
     private String imageName;
+    @Column(name = "EMAIL")
+    private String email;
+    @Column(name = "ACTIVATION_CODE")
+    private String activationCode;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "AUTHORITIES", joinColumns = @JoinColumn(name = "USER_ID"))

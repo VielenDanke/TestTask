@@ -25,6 +25,8 @@
             <form:password path="password" cssClass="fadeIn third"/>
             <h3>Date of birth</h3>
             <form:input type="date" path="dateOfBirth" cssClass="fadeIn third"/>
+            <h3>Email</h3>
+            <form:input type="email" path="email"/>
             <h3>Image</h3>
             <form:input type="file" path="imageFile"/>
             <input type="submit" class="fadeIn fourth" value="Submit">
