@@ -77,19 +77,20 @@ public class UserController {
 
         MultipartFile imageFile = userDTO.getImageFile();
 
-        File uploadDir = new File(filePath);
+        if (imageFile != null) {
 
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
+            File uploadDir = new File(filePath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFileName = uuidFile + "." + imageFile.getOriginalFilename();
+
+            imageFile.transferTo(new File(filePath + "/" + resultFileName));
+
+            user.setImageName(resultFileName);
         }
-
-        String uuidFile = UUID.randomUUID().toString();
-        String resultFileName = uuidFile + "." + imageFile.getOriginalFilename();
-
-        imageFile.transferTo(new File(filePath + "/" + resultFileName));
-
-        user.setImageName(resultFileName);
-
         userService.save(user);
 
         return modelAndView;
