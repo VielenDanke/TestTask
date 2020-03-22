@@ -18,13 +18,15 @@
 <div class="wrapper fadeInDown">
     ${error}
     <div id="formContent">
-        <form:form action="save" method="post" modelAttribute="user">
+        <form:form action="save" method="post" modelAttribute="userDTO" enctype="multipart/form-data">
             <h3>Username</h3>
             <form:input path="username" cssClass="fadeIn second"/>
             <h3>Password</h3>
             <form:password path="password" cssClass="fadeIn third"/>
             <h3>Date of birth</h3>
             <form:input type="date" path="dateOfBirth" cssClass="fadeIn third"/>
+            <h3>Image</h3>
+            <form:input type="file" path="imageFile"/>
             <input type="submit" class="fadeIn fourth" value="Submit">
         </form:form>
         <div id="formFooter">

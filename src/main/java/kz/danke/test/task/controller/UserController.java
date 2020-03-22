@@ -1,16 +1,22 @@
 package kz.danke.test.task.controller;
 
+import kz.danke.test.task.dto.UserDTO;
 import kz.danke.test.task.model.User;
 import kz.danke.test.task.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,9 +24,17 @@ public class UserController {
 
     private final UserService userService;
 
+    @Value("${spring.servlet.multipart.location}")
+    private String filePath;
+
     @ModelAttribute("user")
     public User user() {
         return new User();
+    }
+
+    @ModelAttribute("userDTO")
+    public UserDTO userDTO() {
+        return new UserDTO();
     }
 
     @GetMapping("/")
@@ -47,13 +61,34 @@ public class UserController {
         modelAndView.addObject("name", user.getUsername());
         modelAndView.addObject("number", user.getNumber());
         modelAndView.addObject("birthDate", user.getDateOfBirth());
+        modelAndView.addObject("imageName", user.getImageName());
 
         return modelAndView;
     }
 
     @PostMapping("/save")
-    public ModelAndView saveUser(@ModelAttribute("user") User user) {
+    public ModelAndView saveUser(@ModelAttribute("userDTO") UserDTO userDTO) throws IOException {
         ModelAndView modelAndView = new ModelAndView("/login");
+
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setDateOfBirth(userDTO.getDateOfBirth());
+
+        MultipartFile imageFile = userDTO.getImageFile();
+
+        File uploadDir = new File(filePath);
+
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+
+        String uuidFile = UUID.randomUUID().toString();
+        String resultFileName = uuidFile + "." + imageFile.getOriginalFilename();
+
+        imageFile.transferTo(new File(filePath + "/" + resultFileName));
+
+        user.setImageName(resultFileName);
 
         userService.save(user);
 

@@ -31,6 +31,8 @@ public class User {
     private Integer number = 0;
     @Column(name = "BIRTH_DATE")
     private String dateOfBirth;
+    @Column(name = "IMAGE_NAME")
+    private String imageName;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "AUTHORITIES", joinColumns = @JoinColumn(name = "USER_ID"))
