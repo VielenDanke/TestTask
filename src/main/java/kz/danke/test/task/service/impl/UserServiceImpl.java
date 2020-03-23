@@ -51,7 +51,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByActivationCode(String activationCode) {
-        return userRepository.findByActivationCode(activationCode)
+        User user = userRepository.findByActivationCode(activationCode)
                 .orElseThrow(() -> new WrongDateException("Activation code not found"));
+        user.setActivationCode(null);
+        return user;
     }
 }

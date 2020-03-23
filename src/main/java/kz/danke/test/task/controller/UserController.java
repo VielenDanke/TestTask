@@ -89,7 +89,6 @@ public class UserController {
     public String activateAccount(HttpServletRequest request, @PathVariable String code) {
         User user = userService.findByActivationCode(code);
         request.getSession().setAttribute("activate", "Successfully activated");
-        user.setActivationCode(null);
         userService.save(user);
         return "redirect:/login";
     }
