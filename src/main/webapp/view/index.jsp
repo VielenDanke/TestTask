@@ -16,8 +16,10 @@
     <security:authorize access="isAuthenticated()">
         <a href="${pageContext.request.contextPath}/cabinet">Cabinet</a>
     </security:authorize>
-    <a href="${pageContext.request.contextPath}/registration">Registration</a>
-    <a href="${pageContext.request.contextPath}/login">Login</a>
+    <security:authorize access="!isAuthenticated()">
+        <a href="${pageContext.request.contextPath}/registration">Registration</a>
+        <a href="${pageContext.request.contextPath}/login">Login</a>
+    </security:authorize>
     <security:authorize access="isAuthenticated()">
         <a href="${pageContext.request.contextPath}/logout">Logout</a>
     </security:authorize>

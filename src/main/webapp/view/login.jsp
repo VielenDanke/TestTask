@@ -16,7 +16,7 @@
 </head>
 <body>
 <div class="wrapper fadeInDown">
-    ${activate}
+    ${sessionScope.activate}
     <div id="formContent">
         <form:form action="login" method="post" modelAttribute="user">
             <h3>Username</h3>
