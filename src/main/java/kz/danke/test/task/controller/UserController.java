@@ -4,6 +4,7 @@ import kz.danke.test.task.dto.UserDTO;
 import kz.danke.test.task.model.User;
 import kz.danke.test.task.service.UserService;
 import kz.danke.test.task.service.impl.MailSenderImpl;
+import kz.danke.test.task.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,6 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-    private final MailSenderImpl mailSenderImpl;
 
     @Value("${spring.servlet.multipart.location}")
     private String filePath;
@@ -75,34 +75,10 @@ public class UserController {
     public ModelAndView saveUser(@ModelAttribute("userDTO") UserDTO userDTO) throws IOException {
         ModelAndView modelAndView = new ModelAndView("/login");
 
-        User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        user.setDateOfBirth(userDTO.getDateOfBirth());
-        user.setEmail(userDTO.getEmail());
-        user.setActivationCode(UUID.randomUUID().toString());
-
         MultipartFile imageFile = userDTO.getImageFile();
 
-        if (imageFile != null) {
-
-            File uploadDir = new File(filePath);
-
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + imageFile.getOriginalFilename();
-
-            imageFile.transferTo(new File(filePath + "/" + resultFileName));
-
-            user.setImageName(resultFileName);
-        }
-        String message = String.format("Hello %s, \n" +
-                "Click this link to activate your account " + "http://localhost:8383/activate/%s",
-                user.getUsername(),
-                user.getActivationCode());
-        mailSenderImpl.sendEmail(user.getEmail(), "Activation code", message);
+        User user = User.setUserDTO(userDTO);
+        user.setImageName(FileUploadUtil.fileUpload(imageFile, filePath));
 
         userService.save(user);
 

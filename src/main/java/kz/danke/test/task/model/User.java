@@ -1,5 +1,6 @@
 package kz.danke.test.task.model;
 
+import kz.danke.test.task.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,4 +43,13 @@ public class User {
     @CollectionTable(name = "AUTHORITIES", joinColumns = @JoinColumn(name = "USER_ID"))
     @Enumerated(EnumType.STRING)
     private Set<GrantedAuthority> authorities = new HashSet<>();
+
+    public static User setUserDTO(UserDTO userDTO) {
+        return User.builder()
+                .username(userDTO.getUsername())
+                .password(userDTO.getPassword())
+                .dateOfBirth(userDTO.getDateOfBirth())
+                .email(userDTO.getEmail())
+                .build();
+    }
 }

@@ -11,14 +11,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final MailSenderImpl mailSenderImpl;
 
     @Override
     public User save(User user) {
@@ -29,6 +32,15 @@ public class UserServiceImpl implements UserService {
         if (!DateValidation.isAgeValid(user.getDateOfBirth())) {
             throw new WrongDateException("Invalid date");
         }
+        user.setActivationCode(UUID.randomUUID().toString());
+
+        String message = String.format("Hello %s, \n" +
+                        "Click this link to activate your account " + "http://localhost:8383/activate/%s",
+                user.getUsername(),
+                user.getActivationCode());
+
+        mailSenderImpl.sendEmail(user.getEmail(), "Activation code", message);
+
         return userRepository.save(user);
     }
 
