@@ -3,7 +3,6 @@ package kz.danke.test.task.controller;
 import kz.danke.test.task.dto.UserDTO;
 import kz.danke.test.task.model.User;
 import kz.danke.test.task.service.UserService;
-import kz.danke.test.task.service.impl.MailSenderImpl;
 import kz.danke.test.task.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,11 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor

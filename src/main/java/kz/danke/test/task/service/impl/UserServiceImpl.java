@@ -6,6 +6,7 @@ import kz.danke.test.task.repository.UserRepository;
 import kz.danke.test.task.service.UserService;
 import kz.danke.test.task.util.DateValidation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Value("${app.web.hostname}")
+    private String hostname;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -35,8 +39,9 @@ public class UserServiceImpl implements UserService {
         user.setActivationCode(UUID.randomUUID().toString());
 
         String message = String.format("Hello %s, \n" +
-                        "Click this link to activate your account " + "http://localhost:8383/activate/%s",
+                        "Click this link to activate your account " + "http://%s/activate/%s",
                 user.getUsername(),
+                hostname,
                 user.getActivationCode());
 
         mailSenderImpl.sendEmail(user.getEmail(), "Activation code", message);
