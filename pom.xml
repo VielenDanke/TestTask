@@ -42,7 +42,6 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 		</dependency>
 
-
 		<!-- SPRING / JAVA TAGLIBS -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
