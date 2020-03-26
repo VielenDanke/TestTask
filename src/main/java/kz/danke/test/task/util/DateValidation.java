@@ -1,14 +1,17 @@
 package kz.danke.test.task.util;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
+@Component
 public class DateValidation {
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public static boolean isAgeValid(String date) {
+    public boolean isAgeValid(String date) {
 
         int minAge = 5;
         int maxAge = 150;
@@ -18,7 +21,7 @@ public class DateValidation {
         return calculateAge(birthDate) >= minAge && calculateAge(birthDate) <= maxAge;
     }
 
-    private static int calculateAge(LocalDate birthDate) {
+    private int calculateAge(LocalDate birthDate) {
         LocalDate currentDate = LocalDate.now();
         return Period.between(birthDate, currentDate).getYears();
     }

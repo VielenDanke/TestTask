@@ -20,11 +20,12 @@ public class UserServiceImpl implements UserService {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    @Value("${app.web.hostname}")
+    @Value("${server.address}")
     private String hostname;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final DateValidation dateValidation;
     private final MailSenderImpl mailSenderImpl;
 
     @Override
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
             String encode = passwordEncoder.encode(user.getPassword());
             user.setPassword(encode);
         }
-        if (!DateValidation.isAgeValid(user.getDateOfBirth())) {
+        if (!dateValidation.isAgeValid(user.getDateOfBirth())) {
             throw new WrongDateException("Invalid date");
         }
         user.setActivationCode(UUID.randomUUID().toString());

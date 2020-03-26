@@ -24,6 +24,7 @@ import java.security.Principal;
 public class UserController {
 
     private final UserService userService;
+    private final FileUploadUtil fileUploadUtil;
 
     @Value("${spring.servlet.multipart.location}")
     private String filePath;
@@ -74,7 +75,7 @@ public class UserController {
         MultipartFile imageFile = userDTO.getImageFile();
 
         User user = User.setUserDTO(userDTO);
-        user.setImageName(FileUploadUtil.fileUpload(imageFile, filePath));
+        user.setImageName(fileUploadUtil.fileUpload(imageFile, filePath));
 
         userService.save(user);
 

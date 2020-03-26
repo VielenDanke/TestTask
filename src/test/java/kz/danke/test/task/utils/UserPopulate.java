@@ -16,6 +16,8 @@ public class UserPopulate {
                     .password("TEST_1")
                     .number(0)
                     .authorities(Collections.singleton(Role.ROLE_USER))
+                    .dateOfBirth("2000-11-11")
+                    .email("test1@test.ru")
                     .build(),
             User.builder()
                     .id(null)
@@ -23,6 +25,8 @@ public class UserPopulate {
                     .password("TEST_2")
                     .number(0)
                     .authorities(Collections.singleton(Role.ROLE_USER))
+                    .dateOfBirth("2000-11-11")
+                    .email("test2@test.ru")
                     .build(),
             User.builder()
                     .id(null)
@@ -30,6 +34,8 @@ public class UserPopulate {
                     .password("TEST_3")
                     .number(0)
                     .authorities(Collections.singleton(Role.ROLE_USER))
+                    .dateOfBirth("2000-11-11")
+                    .email("test3@test.ru")
                     .build()
     );
 }

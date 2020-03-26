@@ -1,15 +1,17 @@
 package kz.danke.test.task.util;
 
 import kz.danke.test.task.exceptions.WrongDateException;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+@Component
 public class FileUploadUtil {
 
-    public static String fileUpload(MultipartFile imageFile, String filePath) throws IOException {
+    public String fileUpload(MultipartFile imageFile, String filePath) throws IOException {
         String resultFileName;
 
         if (imageFile == null) {

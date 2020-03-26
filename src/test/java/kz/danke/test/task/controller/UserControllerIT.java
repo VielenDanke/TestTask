@@ -1,8 +1,11 @@
 package kz.danke.test.task.controller;
 
 import com.sun.security.auth.UserPrincipal;
+import kz.danke.test.task.dto.UserDTO;
+import kz.danke.test.task.model.User;
 import kz.danke.test.task.repository.UserRepository;
 import kz.danke.test.task.service.UserService;
+import kz.danke.test.task.util.FileUploadUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,18 +15,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static kz.danke.test.task.utils.UserPopulate.USER_LIST;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestPropertySource("classpath:/application-test.properties")
 public class UserControllerIT {
 
     private static final String USERNAME_FIRST_USER = "TEST_1";
@@ -31,12 +38,16 @@ public class UserControllerIT {
     private MockMvc mockMvc;
     private UserController userController;
     private UserRepository userRepository;
+    private MockMultipartFile mockMultipartFile;
     @MockBean
     private UserService userService;
+    @MockBean
+    private FileUploadUtil fileUploadUtil;
 
     @Before
     public void setup() {
         USER_LIST.forEach(userRepository::save);
+        mockMultipartFile = new MockMultipartFile("a", "a", ".jpeg", "123".getBytes());
     }
 
     @Test
@@ -79,8 +90,19 @@ public class UserControllerIT {
 
     @Test
     public void shouldAddUserToDatabase() throws Exception {
+        Mockito.when(fileUploadUtil.fileUpload(mockMultipartFile, "/test/"))
+                .thenReturn("TEST_FILE_NAME");
+
+        User user = USER_LIST.get(0);
+
         this.mockMvc.perform(post("/save")
-                .flashAttr("user", USER_LIST.get(0)))
+                .flashAttr("userDTO", UserDTO.builder()
+                        .username(user.getUsername())
+                        .password(user.getPassword())
+                        .email(user.getEmail())
+                        .dateOfBirth(user.getDateOfBirth())
+                        .imageFile(mockMultipartFile)
+                        .build()))
                 .andExpect(view().name("/login"));
     }
 
