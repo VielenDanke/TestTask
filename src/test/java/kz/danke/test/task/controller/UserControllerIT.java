@@ -1,7 +1,6 @@
 package kz.danke.test.task.controller;
 
 import com.sun.security.auth.UserPrincipal;
-import kz.danke.test.task.dto.UserDTO;
 import kz.danke.test.task.model.User;
 import kz.danke.test.task.repository.UserRepository;
 import kz.danke.test.task.service.UserService;
@@ -94,15 +93,10 @@ public class UserControllerIT {
                 .thenReturn("TEST_FILE_NAME");
 
         User user = USER_LIST.get(0);
+        user.setMultipartFile(mockMultipartFile);
 
         this.mockMvc.perform(post("/save")
-                .flashAttr("userDTO", UserDTO.builder()
-                        .username(user.getUsername())
-                        .password(user.getPassword())
-                        .email(user.getEmail())
-                        .dateOfBirth(user.getDateOfBirth())
-                        .imageFile(mockMultipartFile)
-                        .build()))
+                .flashAttr("user", user))
                 .andExpect(view().name("/login"));
     }
 

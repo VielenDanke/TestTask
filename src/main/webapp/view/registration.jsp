@@ -18,7 +18,7 @@
 <div class="wrapper fadeInDown">
     ${error}
     <div id="formContent">
-        <form:form action="save" method="post" modelAttribute="userDTO" enctype="multipart/form-data">
+        <form:form action="save" method="post" modelAttribute="user" enctype="multipart/form-data">
             <h3>Username</h3>
             <form:input path="username" cssClass="fadeIn second"/>
             <h3>Password</h3>
@@ -28,7 +28,7 @@
             <h3>Email</h3>
             <form:input type="email" path="email"/>
             <h3>Image</h3>
-            <form:input type="file" path="imageFile"/>
+            <form:input type="file" path="multipartFile"/>
             <input type="submit" class="fadeIn fourth" value="Submit">
         </form:form>
         <div id="formFooter">

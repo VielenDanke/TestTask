@@ -39,6 +39,10 @@ public class UserServiceImpl implements UserService {
         }
         user.setActivationCode(UUID.randomUUID().toString());
 
+        if (hostname.equals("localhost")) {
+            hostname = hostname.concat(":8383");
+        }
+
         String message = String.format("Hello %s, \n" +
                         "Click this link to activate your account " + "http://%s/activate/%s",
                 user.getUsername(),

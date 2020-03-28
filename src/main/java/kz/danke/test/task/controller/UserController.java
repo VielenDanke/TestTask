@@ -1,6 +1,5 @@
 package kz.danke.test.task.controller;
 
-import kz.danke.test.task.dto.UserDTO;
 import kz.danke.test.task.model.User;
 import kz.danke.test.task.service.UserService;
 import kz.danke.test.task.util.FileUploadUtil;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,11 +30,6 @@ public class UserController {
     @ModelAttribute("user")
     public User user() {
         return new User();
-    }
-
-    @ModelAttribute("userDTO")
-    public UserDTO userDTO() {
-        return new UserDTO();
     }
 
     @GetMapping("/")
@@ -69,13 +62,10 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public ModelAndView saveUser(@ModelAttribute("userDTO") UserDTO userDTO) throws IOException {
+    public ModelAndView saveUser(@ModelAttribute("user") User user) throws IOException {
         ModelAndView modelAndView = new ModelAndView("/login");
 
-        MultipartFile imageFile = userDTO.getImageFile();
-
-        User user = User.setUserDTO(userDTO);
-        user.setImageName(fileUploadUtil.fileUpload(imageFile, filePath));
+        user.setImageName(fileUploadUtil.fileUpload(user.getMultipartFile(), filePath));
 
         userService.save(user);
 

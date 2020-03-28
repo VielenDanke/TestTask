@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<jaxb.version>2.3.0</jaxb.version>
+		<maven.plugin.version>3.8.1</maven.plugin.version>
 	</properties>
 
 	<dependencies>
@@ -129,10 +130,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${maven.plugin.version}</version>
 				<configuration>
-					<target>1.8</target>
-					<source>1.8</source>
+					<target>${java.version}</target>
+					<source>${java.version}</source>
 				</configuration>
 			</plugin>
 		</plugins>
