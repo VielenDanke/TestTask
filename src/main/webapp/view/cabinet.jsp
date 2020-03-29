@@ -26,9 +26,18 @@
         <li class="list-group-item">${name}</li>
         <li class="list-group-item">${number}</li>
         <li class="list-group-item">${birthDate}</li>
+        <c:if test="${userMessages != null}">
+            <c:forEach var="message" items="${userMessages}">
+                <li class="list-group-item">${message.description}</li>
+            </c:forEach>
+        </c:if>
         <div>
-            <img src="/home/${imageName}">
+            <img src="/home/${imageName}" height="200" width="200">
         </div>
+        <form action="${pageContext.request.contextPath}/add_message" method="post">
+            <input type="text" name="messageText" value="Insert message"/>
+            <input type="submit" value="Submit"/>
+        </form>
     </ul>
     <div class="card-body">
         <a href="${pageContext.request.contextPath}/" class="card-link">Main page</a>

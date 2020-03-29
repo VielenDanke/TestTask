@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,6 +38,8 @@ public class User {
     private String email;
     @Column(name = "ACTIVATION_CODE")
     private String activationCode;
+    @OneToMany(mappedBy = "user")
+    private List<Message> messages;
     @Transient
     private MultipartFile multipartFile;
 
