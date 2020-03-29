@@ -5,6 +5,7 @@ import kz.danke.test.task.security.CustomUserDetails;
 import kz.danke.test.task.service.MessageService;
 import kz.danke.test.task.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +42,7 @@ public class UserController {
     }
 
     @GetMapping("/cabinet")
+    @PreAuthorize(value = "hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public ModelAndView getCabinetPage(@AuthenticationPrincipal CustomUserDetails authUser) {
         User user = userService.findByUsername(authUser.getUsername());
 
