@@ -6,6 +6,8 @@ import kz.danke.test.task.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
@@ -15,5 +17,10 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message save(Message message) {
         return messageRepository.save(message);
+    }
+
+    @Override
+    public List<Message> findAll() {
+        return messageRepository.findAll();
     }
 }

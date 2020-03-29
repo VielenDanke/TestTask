@@ -26,11 +26,6 @@
         <li class="list-group-item">${name}</li>
         <li class="list-group-item">${number}</li>
         <li class="list-group-item">${birthDate}</li>
-        <c:if test="${userMessages != null}">
-            <c:forEach var="message" items="${userMessages}">
-                <li class="list-group-item">${message.description}</li>
-            </c:forEach>
-        </c:if>
         <div>
             <img src="/home/${imageName}" height="200" width="200">
         </div>

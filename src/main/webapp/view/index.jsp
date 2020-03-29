@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
@@ -23,5 +26,11 @@
     <security:authorize access="isAuthenticated()">
         <a href="${pageContext.request.contextPath}/logout">Logout</a>
     </security:authorize>
+    <c:if test="${allMessage != null}">
+        <c:forEach var="message" items="${allMessage}">
+            <li class="list-group-item">${message.user.username}</li>
+            <li class="list-group-item">${message.description}</li>
+        </c:forEach>
+    </c:if>
 </body>
 </html>

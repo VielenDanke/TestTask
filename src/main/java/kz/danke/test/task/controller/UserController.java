@@ -2,6 +2,7 @@ package kz.danke.test.task.controller;
 
 import kz.danke.test.task.model.User;
 import kz.danke.test.task.security.CustomUserDetails;
+import kz.danke.test.task.service.MessageService;
 import kz.danke.test.task.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
 
     private final UserService userService;
+    private final MessageService messageService;
 
     @ModelAttribute("user")
     public User user() {
@@ -23,7 +25,8 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public String getMainPage() {
+    public String getMainPage(Model model) {
+        model.addAttribute("allMessage", messageService.findAll());
         return "index";
     }
 
