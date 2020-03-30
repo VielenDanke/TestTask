@@ -34,7 +34,7 @@ public class User {
     private String dateOfBirth;
     @Column(name = "IMAGE_NAME")
     private String imageName;
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", nullable = false)
     private String email;
     @Column(name = "ACTIVATION_CODE")
     private String activationCode;
