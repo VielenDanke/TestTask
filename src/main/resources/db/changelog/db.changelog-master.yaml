@@ -84,3 +84,63 @@ databaseChangeLog:
             constraintName: message_user_fk
             referencedColumnNames: user_id
             referencedTableName: users
+  - changeSet:
+      id: 2
+      author: vielen
+      comment: "Add two default users (Admin and User)"
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: user_id
+                  value: '1'
+              - column:
+                  name: username
+                  value: 'admin'
+              - column:
+                  name: password
+                  value: '$2a$08$81xA3EsIobZbr4.d6tzKwekRpVA4aD/Mux6fVQtpEq8i6P657O49y'
+              - column:
+                  name: email
+                  value: 'admin@admin.ru'
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: user_id
+                  value: '2'
+              - column:
+                  name: username
+                  value: 'user'
+              - column:
+                  name: password
+                  value: '$2a$08$TlbAVkyDen8lugz8waoaNuOFAyGN9NTJhM4awPcSNClGx13JcjjXW'
+              - column:
+                  name: email
+                  value: 'user@user.ru'
+        - insert:
+            tableName: authorities
+            columns:
+              - column:
+                  name: user_id
+                  value: '1'
+              - column:
+                  name: authorities
+                  value: 'ROLE_ADMIN'
+        - insert:
+            tableName: authorities
+            columns:
+              - column:
+                  name: user_id
+                  value: '2'
+              - column:
+                  name: authorities
+                  value: 'ROLE_USER'
+      rollback:
+        - delete:
+            tableName: users
+            where: user_id in ('1', '2')
+        - delete:
+            tableName: authorities
+            where: user_id in ('1', '2')
