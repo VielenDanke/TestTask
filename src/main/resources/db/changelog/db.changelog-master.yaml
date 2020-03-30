@@ -1,0 +1,86 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-lesson1.yaml
+  - changeSet:
+      id: 1
+      author: vielen
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: number
+                  type: int
+                  defaultValueNumeric: '0'
+              - column:
+                  name: image_name
+                  type: varchar(255)
+              - column:
+                  name: email
+                  type: varchar(255)
+              - column:
+                  name: birth_date
+                  type: varchar(255)
+              - column:
+                  name: activation_code
+                  type: varchar(255)
+        - createTable:
+            tableName: messages
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                    name: description
+                    type: varchar(2048)
+                    constraints:
+                      nullable: false
+              - column:
+                    name: user_id
+                    type: bigint
+                    constraints:
+                      nullable: false
+        - createTable:
+            tableName: authorities
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: authorities
+                  type: varchar(255)
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: authorities
+            constraintName: authorities_user_fk
+            referencedColumnNames: user_id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: messages
+            constraintName: message_user_fk
+            referencedColumnNames: user_id
+            referencedTableName: users
