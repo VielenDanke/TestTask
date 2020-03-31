@@ -2,6 +2,7 @@ package kz.danke.test.task.controller;
 
 import kz.danke.test.task.model.User;
 import kz.danke.test.task.security.CustomUserDetails;
+import kz.danke.test.task.security.annotations.IsAuthorized;
 import kz.danke.test.task.service.MessageService;
 import kz.danke.test.task.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/cabinet")
-    @PreAuthorize(value = "hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    @IsAuthorized
     public ModelAndView getCabinetPage(@AuthenticationPrincipal CustomUserDetails authUser) {
         User user = userService.findByUsername(authUser.getUsername());
 
@@ -58,6 +59,7 @@ public class UserController {
     }
 
     @GetMapping("/increase")
+    @IsAuthorized
     public String increaseNumber(@AuthenticationPrincipal CustomUserDetails authUser, Model model) {
         User byUsername = userService.findByUsername(authUser.getUsername());
 
