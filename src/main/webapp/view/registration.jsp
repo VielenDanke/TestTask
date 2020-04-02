@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
@@ -18,21 +17,21 @@
 <div class="wrapper fadeInDown">
     ${error}
     <div id="formContent">
-        <form:form action="save" method="post" modelAttribute="user" enctype="multipart/form-data">
+        <form action="save" method="post" enctype="multipart/form-data">
             <h3>Username</h3>
-            <form:input path="username" cssClass="fadeIn second"/>
+            <input type="text" name="username" class="fadeIn second"/>
             <h3>Password</h3>
-            <form:password path="password" cssClass="fadeIn third"/>
+            <input type="password" name="password" class="fadeIn third"/>
             <h3>Date of birth</h3>
-            <form:input type="date" path="dateOfBirth" cssClass="fadeIn third"/>
+            <input type="date" name="dateOfBirth" class="fadeIn third"/>
             <h3>Email</h3>
-            <form:input type="email" path="email"/>
+            <input type="email" name="email"/>
             <h3>Image</h3>
-            <form:input type="file" path="multipartFile"/>
+            <input type="file" name="multipartFile"/>
             <input type="submit" class="fadeIn fourth" value="Submit">
-        </form:form>
+        </form>
         <div id="formFooter">
-            <a class="underlineHover" href="${pageContext.request.contextPath}/login">Login</a>
+            <a class="underlineHover" href="login">Login</a>
         </div>
     </div>
 </div>

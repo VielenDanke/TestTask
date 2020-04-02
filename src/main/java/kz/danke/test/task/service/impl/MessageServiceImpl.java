@@ -23,4 +23,9 @@ public class MessageServiceImpl implements MessageService {
     public List<Message> findAll() {
         return messageRepository.findAll();
     }
+
+    @Override
+    public void deleteAll() {
+        messageRepository.deleteAll();
+    }
 }

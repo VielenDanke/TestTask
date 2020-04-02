@@ -26,6 +26,9 @@
     <security:authorize access="isAuthenticated()">
         <a href="${pageContext.request.contextPath}/logout">Logout</a>
     </security:authorize>
+    <security:authorize access="hasRole('ROLE_ADMIN')">
+        <a href="delete_messages">Delete all messages</a>
+    </security:authorize>
     <c:if test="${allMessage != null}">
         <c:forEach var="message" items="${allMessage}">
             <li class="list-group-item">${message.user.username}</li>

@@ -1,4 +1,4 @@
-insert into users (user_id, username, password, email) values (1, 'admin', 'admin', 'admin@admin.ru');
-insert into users (user_id, username, password, email) values (2, 'user', 'user', 'user@user.ru');
-insert into authorities(user_id, authorities) values (1, 'ROLE_ADMIN');
-insert into authorities(user_id, authorities) values (2, 'ROLE_USER')
+insert into users (user_id, username, password, email) values (100000, 'admin', 'admin', 'admin@admin.ru');
+insert into users (user_id, username, password, email) values (100001, 'user', 'user', 'user@user.ru');
+insert into authorities(user_id, authorities) values (100000, 'ROLE_ADMIN');
+insert into authorities(user_id, authorities) values (100001, 'ROLE_USER')

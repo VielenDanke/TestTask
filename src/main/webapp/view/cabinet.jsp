@@ -29,8 +29,13 @@
         <div>
             <img src="/home/${imageName}" height="200" width="200">
         </div>
-        <form action="${pageContext.request.contextPath}/add_message" method="post">
-            <input type="text" name="messageText" value="Insert message"/>
+        <c:if test="${descriptionError != null}">
+            <div class="alert alert-danger" role="alert">
+                    ${descriptionError}
+            </div>
+        </c:if>
+        <form action="add_message" method="post">
+            <input type="text" name="description" placeholder="Insert message"/>
             <input type="submit" value="Submit"/>
         </form>
     </ul>

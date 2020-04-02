@@ -1,6 +1,7 @@
 package kz.danke.test.task.service.impl;
 
 import kz.danke.test.task.exceptions.WrongDateException;
+import kz.danke.test.task.model.Role;
 import kz.danke.test.task.model.User;
 import kz.danke.test.task.repository.UserRepository;
 import kz.danke.test.task.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.UUID;
 
 @Service
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
             throw new WrongDateException("Invalid date");
         }
         user.setActivationCode(UUID.randomUUID().toString());
+        user.setAuthorities(Collections.singleton(Role.ROLE_USER));
 
         if (hostname.equals("localhost")) {
             hostname = hostname.concat(":8383");

@@ -6,7 +6,6 @@ import kz.danke.test.task.security.annotations.IsAuthorized;
 import kz.danke.test.task.service.MessageService;
 import kz.danke.test.task.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,16 +29,6 @@ public class UserController {
     public String getMainPage(Model model) {
         model.addAttribute("allMessage", messageService.findAll());
         return "index";
-    }
-
-    @GetMapping("/registration")
-    public String getRegistrationPage() {
-        return "registration";
-    }
-
-    @GetMapping("/login")
-    public String getLoginPage() {
-        return "login";
     }
 
     @GetMapping("/cabinet")

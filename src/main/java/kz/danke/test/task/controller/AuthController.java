@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
 
@@ -28,13 +29,30 @@ public class AuthController {
     @Value("${spring.servlet.multipart.location}")
     private String filePath;
 
+    @ModelAttribute("user")
+    public User user() {
+        return new User();
+    }
+
+    @GetMapping("/registration")
+    public String getRegistrationPage() {
+        return "registration";
+    }
+
+    @GetMapping("/login")
+    public String getLoginPage() {
+        return "login";
+    }
+
     @PostMapping("/save")
-    public String saveUser(@ModelAttribute("user") User user,
+    public String saveUser(@Valid User user,
                            BindingResult bindingResult,
                            Model model) throws IOException {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtil.getErrors(bindingResult);
+
             model.mergeAttributes(errors);
+
             return "registration";
         }
 

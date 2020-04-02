@@ -9,8 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,11 +27,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
     private Long id;
-    @Column(name = "USERNAME", nullable = false)
-    @NotNull(message = "Username cannot be null")
+    @Column(name = "USERNAME", nullable = false, unique = true)
+    @NotBlank(message = "Username cannot be null")
+    @Size(min = 3, max = 128, message = "Invalid username")
     private String username;
     @Column(name = "PASSWORD", nullable = false)
-    @NotNull(message = "Password cannot be null")
+    @NotBlank(message = "Password cannot be null")
     private String password;
     @Column(name = "NUMBER")
     private Integer number = 0;
@@ -40,7 +41,7 @@ public class User {
     @Column(name = "IMAGE_NAME")
     private String imageName;
     @Column(name = "EMAIL", nullable = false)
-    @NotNull(message = "Email cannot be null")
+    @NotBlank(message = "Email cannot be null")
     @EmailConstraint
     private String email;
     @Column(name = "ACTIVATION_CODE")
