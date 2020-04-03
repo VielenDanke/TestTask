@@ -2,6 +2,7 @@ package kz.danke.test.task.controller;
 
 import kz.danke.test.task.dto.LoginRequest;
 import kz.danke.test.task.model.User;
+import kz.danke.test.task.security.jwtoken.TokenProvider;
 import kz.danke.test.task.service.UserService;
 import kz.danke.test.task.util.ControllerUtil;
 import kz.danke.test.task.util.FileUploadUtil;
@@ -32,6 +33,7 @@ public class AuthController {
     private final UserService userService;
     private final FileUploadUtil fileUploadUtil;
     private final AuthenticationManager authenticationManager;
+    private final TokenProvider tokenProvider;
 
     @Value("${spring.servlet.multipart.location}")
     private String filePath;
@@ -53,6 +55,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public String loginUser(
+            HttpServletRequest request,
             @Valid LoginRequest loginRequest,
             BindingResult bindingResult,
             Model model
@@ -73,6 +76,10 @@ public class AuthController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = tokenProvider.createToken(authentication);
+
+        request.getSession().setAttribute("Authorization", "Bearer " + token);
 
         return "index";
     }

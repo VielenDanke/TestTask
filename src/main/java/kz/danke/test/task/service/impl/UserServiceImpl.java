@@ -46,6 +46,8 @@ public class UserServiceImpl implements UserService {
             hostname = hostname.concat(":8383");
         }
 
+        user.setAuthorities(Collections.singleton(Role.ROLE_USER));
+
         String message = String.format("Hello %s, \n" +
                         "Click this link to activate your account " + "http://%s/activate/%s",
                 user.getUsername(),
