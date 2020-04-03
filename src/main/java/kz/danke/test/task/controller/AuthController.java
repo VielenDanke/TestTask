@@ -1,11 +1,17 @@
 package kz.danke.test.task.controller;
 
+import kz.danke.test.task.dto.LoginRequest;
 import kz.danke.test.task.model.User;
 import kz.danke.test.task.service.UserService;
 import kz.danke.test.task.util.ControllerUtil;
 import kz.danke.test.task.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +31,7 @@ public class AuthController {
 
     private final UserService userService;
     private final FileUploadUtil fileUploadUtil;
+    private final AuthenticationManager authenticationManager;
 
     @Value("${spring.servlet.multipart.location}")
     private String filePath;
@@ -42,6 +49,32 @@ public class AuthController {
     @GetMapping("/login")
     public String getLoginPage() {
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String loginUser(
+            @Valid LoginRequest loginRequest,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = ControllerUtil.getErrors(bindingResult);
+
+            model.mergeAttributes(errors);
+
+            return "login";
+        }
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return "index";
     }
 
     @PostMapping("/save")

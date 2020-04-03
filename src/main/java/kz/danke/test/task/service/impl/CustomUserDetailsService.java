@@ -24,4 +24,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return CustomUserDetails.create(user);
     }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public UserDetails loadUserById(Long userIdFromToken) {
+        User user = userRepository.findById(userIdFromToken)
+                .orElseThrow(() -> new UsernameNotFoundException("User by ID not found"));
+
+        return CustomUserDetails.create(user);
+    }
 }

@@ -20,6 +20,7 @@
 		<maven.plugin.version>3.8.1</maven.plugin.version>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMdd-HHmmssSSS</maven.build.timestamp.format>
+		<jsonwebtoken.version>0.9.1</jsonwebtoken.version>
 	</properties>
 
 	<dependencies>
@@ -87,6 +88,13 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+
+		<!-- JSON WEB TOKEN -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jsonwebtoken.version}</version>
 		</dependency>
 
 		<!-- TEST -->
