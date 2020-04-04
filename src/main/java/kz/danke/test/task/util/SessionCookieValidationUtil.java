@@ -38,12 +38,12 @@ public class SessionCookieValidationUtil {
     public static String sessionCookieTokenGet(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 
-        Optional<Cookie> any = Arrays.stream(cookies)
+        Optional<Cookie> authorizationCookie = Arrays.stream(cookies)
                 .filter(cookie -> cookie.getName().equals(AUTHORIZATION))
                 .findAny();
 
-        if (any.isPresent()) {
-            return deserialize(any.get());
+        if (authorizationCookie.isPresent()) {
+            return deserialize(authorizationCookie.get());
         } else {
             return (String) request.getSession().getAttribute(AUTHORIZATION);
         }
