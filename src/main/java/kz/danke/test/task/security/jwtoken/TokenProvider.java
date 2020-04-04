@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import kz.danke.test.task.conf.AppProperties;
 import kz.danke.test.task.security.CustomUserDetails;
 import kz.danke.test.task.service.impl.CustomUserDetailsService;
+import kz.danke.test.task.util.SessionCookieValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,8 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+
+import static kz.danke.test.task.util.ConstantUtil.BEARER;
 
 @Service
 @RequiredArgsConstructor
@@ -56,8 +59,8 @@ public class TokenProvider {
     public String getJwtFromRequest(HttpServletRequest request) {
         int bearerTokenStartsFrom = 7;
 
-        String bearerToken = (String) request.getSession().getAttribute("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        String bearerToken = SessionCookieValidationUtil.sessionCookieTokenGet(request);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER)) {
             return bearerToken.substring(bearerTokenStartsFrom, bearerToken.length());
         }
         return null;

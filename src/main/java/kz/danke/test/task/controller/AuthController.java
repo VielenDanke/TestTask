@@ -6,12 +6,12 @@ import kz.danke.test.task.security.jwtoken.TokenProvider;
 import kz.danke.test.task.service.UserService;
 import kz.danke.test.task.util.ControllerUtil;
 import kz.danke.test.task.util.FileUploadUtil;
+import kz.danke.test.task.util.SessionCookieValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
@@ -56,6 +57,7 @@ public class AuthController {
     @PostMapping("/login")
     public String loginUser(
             HttpServletRequest request,
+            HttpServletResponse response,
             @Valid LoginRequest loginRequest,
             BindingResult bindingResult,
             Model model
@@ -79,7 +81,7 @@ public class AuthController {
 
         String token = tokenProvider.createToken(authentication);
 
-        request.getSession().setAttribute("Authorization", "Bearer " + token);
+        SessionCookieValidationUtil.sessionCookieTokenSet(request, response, token);
 
         return "index";
     }

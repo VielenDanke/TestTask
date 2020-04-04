@@ -18,15 +18,25 @@
 <div class="wrapper fadeInDown">
     ${sessionScope.activate}
     <div id="formContent">
-        <form:form action="login" method="post" modelAttribute="user">
+        <form method="post">
             <h3>Username</h3>
-            <form:input path="username"/>
+            <c:if test="${usernameError != null}">
+                <div class="alert alert-danger" role="alert">
+                    ${usernameError}
+                </div>
+            </c:if>
+            <input type="text" name="username" placeholder="Insert your username"/>
             <h3>Password</h3>
-            <form:password path="password"/>
+            <c:if test="${passwordError != null}">
+                <div class="alert alert-danger" role="alert">
+                        ${passwordError}
+                </div>
+            </c:if>
+            <input type="password" name="password" placeholder="Insert your password">
             <input type="submit" class="fadeIn fourth" value="Login">
-        </form:form>
+        </form>
         <div id="formFooter">
-            <a class="underlineHover" href="${pageContext.request.contextPath}/registration">Registration</a>
+            <a class="underlineHover" href="registration">Registration</a>
         </div>
     </div>
 </div>

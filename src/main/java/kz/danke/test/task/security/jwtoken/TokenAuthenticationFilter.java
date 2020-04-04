@@ -1,4 +1,5 @@
 package kz.danke.test.task.security.jwtoken;
+import kz.danke.test.task.util.SessionCookieValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +31,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                request.getSession().setAttribute("Authorization", "Bearer " + jwt);
+                SessionCookieValidationUtil.sessionCookieTokenSet(request, response, jwt);
             }
         } catch (Exception ex) {
             LOGGER.error("Could not set user authentication in security context", ex);
