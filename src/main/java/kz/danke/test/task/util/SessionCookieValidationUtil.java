@@ -1,6 +1,7 @@
 package kz.danke.test.task.util;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.SerializationUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Optional;
 
 import static kz.danke.test.task.util.ConstantUtil.AUTHORIZATION;
@@ -26,7 +28,9 @@ public class SessionCookieValidationUtil {
             HttpSession session = request.getSession();
             session.setAttribute(AUTHORIZATION, BEARER + token);
         } else {
-            Cookie cookie = new Cookie(AUTHORIZATION, BEARER + token);
+            token = BEARER.concat(token);
+            String tokenAfterSerialization = serialize(token);
+            Cookie cookie = new Cookie(AUTHORIZATION, tokenAfterSerialization);
             response.addCookie(cookie);
         }
     }
@@ -39,9 +43,19 @@ public class SessionCookieValidationUtil {
                 .findAny();
 
         if (any.isPresent()) {
-            return any.get().getValue();
+            return deserialize(any.get());
         } else {
             return (String) request.getSession().getAttribute(AUTHORIZATION);
         }
+    }
+
+    private static String serialize(String token) {
+        return Base64.getUrlEncoder()
+                .encodeToString(SerializationUtils.serialize(token));
+    }
+
+    private static String deserialize(Cookie cookie) {
+        return (String) SerializationUtils.deserialize(
+                Base64.getUrlDecoder().decode(cookie.getValue()));
     }
 }
